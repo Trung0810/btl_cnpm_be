@@ -1,5 +1,9 @@
-const app = require("./app");
+const app = require("./App");
+const connect = require("./config/DataBase");
 
-app.listen(8888, () => {
-  console.log("Server running on port 8888");
-});
+(async () => {
+  await connect();
+  app.listen(8888, () => {
+    console.log("Server running on port 8888");
+  });
+})();
