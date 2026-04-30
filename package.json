@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "src/server.js",
+  "main": "src/Server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon ./src/Server.js"
   },
   "dependencies": {
     "api-query-params": "^6.1.0",

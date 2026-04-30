@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
-const { type } = require("node:os");
 const { Schema, model, Types } = mongoose;
 
 const orderSchema = Schema(
   {
     customerId: {
       type: Types.ObjectId,
-      ref: "Customer",
+      ref: "User",
       required: true,
     },
     customerName: {

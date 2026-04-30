@@ -1,17 +1,17 @@
 const {
-  getCustomerListService,
-  getCustomerByIdService,
-  addNewCustomerService,
+  getUserListService,
+  getUserByIdService,
+  addNewUserService,
   handleLoginService,
-  updateCustomerService,
-  deleteCustomerService,
-} = require("../service/CustomerService");
+  updateUserService,
+  deleteUserService,
+} = require("../service/UserService");
 
-const getCustomerListController = async (req, res) => {
+const getUserListController = async (req, res) => {
   try {
-    const result = await getCustomerListService();
+    const result = await getUserListService();
     return res.status(200).json({
-      message: "Get customer list successfully!",
+      message: "Get user list successfully!",
       data: result,
     });
   } catch (error) {
@@ -21,14 +21,14 @@ const getCustomerListController = async (req, res) => {
   }
 };
 
-const getCustomerByIdController = async (req, res) => {
+const getUserByIdController = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await getCustomerByIdService(id);
+    const result = await getUserByIdService(id);
 
     return res.status(200).json({
-      message: "Get customer successfully!",
+      message: "Get user successfully!",
       data: result,
     });
   } catch (error) {
@@ -38,17 +38,17 @@ const getCustomerByIdController = async (req, res) => {
   }
 };
 
-const addNewCustomerController = async (req, res) => {
+const addNewUserController = async (req, res) => {
   try {
     const data = req.body;
-    const result = await addNewCustomerService(data);
+    const result = await addNewUserService(data);
 
     return res.status(201).json({
-      message: "Add new customer successfully!",
+      message: "Add new user successfully!",
       data: result,
     });
   } catch (error) {
-    console.log("🚀 ~ addNewCustomerController ~ error:", error);
+    console.log("🚀 ~ addNewUserController ~ error:", error);
     return res.status(400).json({
       error: error.message,
     });
@@ -72,15 +72,15 @@ const handleLoginController = async (req, res) => {
   }
 };
 
-const updateCustomerController = async (req, res) => {
+const updateUserController = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
 
-    const result = await updateCustomerService(id, data);
+    const result = await updateUserService(id, data);
 
     return res.status(200).json({
-      message: "Update customer successfully!",
+      message: "Update user successfully!",
       data: result,
     });
   } catch (error) {
@@ -90,14 +90,14 @@ const updateCustomerController = async (req, res) => {
   }
 };
 
-const deleteCustomerController = async (req, res) => {
+const deleteUserController = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await deleteCustomerService(id);
+    const result = await deleteUserService(id);
 
     return res.status(200).json({
-      message: "Delete customer successfully!",
+      message: "Delete user successfully!",
       data: result,
     });
   } catch (error) {
@@ -108,10 +108,10 @@ const deleteCustomerController = async (req, res) => {
 };
 
 module.exports = {
-  getCustomerListController,
-  getCustomerByIdController,
-  addNewCustomerController,
+  getUserListController,
+  getUserByIdController,
+  addNewUserController,
   handleLoginController,
-  updateCustomerController,
-  deleteCustomerController,
+  updateUserController,
+  deleteUserController,
 };

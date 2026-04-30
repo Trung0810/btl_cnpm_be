@@ -1,5 +1,5 @@
 const { Types } = require("mongoose");
-const Customer = require("../model/Customer");
+const User = require("../model/User");
 const Order = require("../model/Order");
 
 const getOrderListService = async () => {
@@ -33,14 +33,14 @@ const getOrderByIdService = async (id) => {
 
     return order;
   } catch (error) {
-    console.log("🚀 ~ getOrderByIdService ~ e:", e);
-    throw e;
+    console.log("🚀 ~ getOrderByIdService ~ error:", error);
+    throw error;
   }
 };
 
 const addNewOrderService = async (customerId, { items, total }) => {
   try {
-    const customer = await Customer.findById(customerId);
+    const customer = await User.findById(customerId);
     console.log("🚀 ~ addNewOrderService ~ customer:", customer);
     const { fullname } = customer;
     const newOrder = await Order.create({
@@ -77,14 +77,14 @@ const updateOrderService = async (id, { items, total }) => {
   }
 };
 
-const deleteOrderServeice = async (id) => {
+const deleteOrderService = async (id) => {
   try {
     const deletedOrder = await Order.findByIdAndDelete(id);
 
-    console.log("🚀 ~ deleteOrderServeice ~ deletedOrder:", deletedOrder);
+    console.log("🚀 ~ deleteOrderService ~ deletedOrder:", deletedOrder);
     return deletedOrder;
   } catch (error) {
-    console.log("🚀 ~ deleteOrderServeice ~ error:", error);
+    console.log("🚀 ~ deleteOrderService ~ error:", error);
     throw error;
   }
 };
@@ -95,5 +95,5 @@ module.exports = {
   getOrderByIdService,
   addNewOrderService,
   updateOrderService,
-  deleteOrderServeice,
+  deleteOrderService,
 };

@@ -3,7 +3,7 @@ const {
   getOrderByIdService,
   addNewOrderService,
   updateOrderService,
-  deleteOrderServeice,
+  deleteOrderService,
   getOrderListByCustomerService,
 } = require("../service/OrderService");
 
@@ -95,7 +95,7 @@ const deleteOrderController = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await deleteOrderServeice(id);
+    const result = await deleteOrderService(id);
 
     return res.status(200).json({
       message: "Delete Order successfully!",

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
-const customerSchema = Schema(
+const userSchema = Schema(
   {
     username: {
       type: String,
@@ -46,6 +46,6 @@ const customerSchema = Schema(
   { timestamps: true },
 );
 
-const Customer = model("Customer", customerSchema);
+const User = model("User", userSchema);
 
-module.exports = Customer;
+module.exports = User;
