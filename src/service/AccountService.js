@@ -101,8 +101,12 @@ const loginAccountService = async ({ username, password }) => {
 const getAccountService = async (user) => {
   try {
     const account = await Account.findById(user.accountId);
+    const infor = {
+      username: account.username,
+      role: user.role,
+    };
 
-    return account;
+    return infor;
   } catch (error) {
     console.log("🚀 ~ getAccountByIdService ~ error:", error);
     throw error;
