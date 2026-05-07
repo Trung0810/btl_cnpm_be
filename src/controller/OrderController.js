@@ -24,7 +24,7 @@ const getOrderListController = async (req, res) => {
 
 const getOrderListByCustomerController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const result = await getOrderListByCustomerService(customerId);
 
     return res.status(200).json({
@@ -57,7 +57,7 @@ const getOrderByIdController = async (req, res) => {
 
 const addNewOrderController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const data = req.body;
 
     const result = await addNewOrderService(customerId, data);

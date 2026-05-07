@@ -24,8 +24,8 @@ shoesRouterAPI.get("/category", getAllCategoryController);
 shoesRouterAPI.get("/sort", getAllSortMethodController);
 shoesRouterAPI.post("/shoes", addNewShoesController);
 shoesRouterAPI.post("/shoes/seed", seedShoesController);
-shoesRouterAPI.delete("/shoes/delete-all", deleteAllShoesController);
 shoesRouterAPI.put("/shoes/:id", updateShoesController);
+shoesRouterAPI.delete("/shoes/delete-all", deleteAllShoesController);
 shoesRouterAPI.delete("/shoes/:id", deleteShoesController);
 
 module.exports = shoesRouterAPI;

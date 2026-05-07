@@ -1,12 +1,45 @@
 require("dotenv").config();
 const User = require("../model/User");
+const Account = require("../model/Account");
 const { createCartService, deleteCartService } = require("./CartService");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
+const createUserService = async ({
+  fullname,
+  birthday,
+  gender,
+  email,
+  phone,
+  address,
+  role = "customer",
+}) => {
+  try {
+    const newUser = await User.create({
+      fullname,
+      birthday,
+      gender,
+      email,
+      phone,
+      address,
+      role,
+    });
+
+    console.log("🚀 ~ createUserService ~ newUser:", newUser);
+    return newUser;
+  } catch (error) {
+    console.log("🚀 ~ createUserService ~ error:", error);
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      throw new Error(`${field} already exists!`);
+    }
+    throw error;
+  }
+};
 
 const getUserListService = async () => {
   try {
-    const userList = await User.find({ role: "customer" });
+    const userList = await User.find({ role: "customer" }).populate(
+      "accountId",
+    );
     console.log("🚀 ~ getUserListService ~ userList:", userList);
 
     return userList;
@@ -18,7 +51,7 @@ const getUserListService = async () => {
 
 const getUserByIdService = async (id) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("accountId");
     console.log("🚀 ~ getUserByIdService ~ user:", user);
 
     return user;
@@ -28,90 +61,23 @@ const getUserByIdService = async (id) => {
   }
 };
 
-const addNewUserService = async ({
-  username,
-  password,
-  fullname,
-  birthday,
-  gender,
-  email,
-  phone,
-  address,
-}) => {
-  try {
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
-      username,
-      password: hashPassword,
-      fullname,
-      birthday,
-      gender,
-      email,
-      phone,
-      address,
-      role: "customer",
-    });
-
-    await createCartService(newUser._id);
-
-    return newUser;
-  } catch (error) {
-    console.log("🚀 ~ addNewUserService ~ error:", error);
-    if (error.code === 11000) {
-      const field = Object.keys(error.keyPattern)[0];
-      throw new Error(`${field} already exists!`);
-    }
-    throw error;
-  }
-};
-
-const handleLoginService = async ({ username, password }) => {
-  try {
-    const user = await User.findOne({ username: username });
-
-    if (user) {
-      const isMatched = await bcrypt.compare(password, user.password);
-      if (isMatched) {
-        const payload = {
-          username: user.username,
-          userId: user._id,
-          role: user.role,
-        };
-
-        const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRESIN,
-        });
-
-        return {
-          accessToken,
-          payload,
-        };
-      } else {
-        throw new Error("Username or password incorrect!");
-      }
-    } else {
-      throw new Error("Username or password incorrect!");
-    }
-  } catch (error) {
-    console.log("🚀 ~ handleLoginService ~ error:", error);
-    throw error;
-  }
-};
-
 const updateUserService = async (
   id,
   { fullname, gender, birthday, address, phone, email },
 ) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, {
-      fullname,
-      gender,
-      birthday,
-      address,
-      phone,
-      email,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        fullname,
+        gender,
+        birthday,
+        address,
+        phone,
+        email,
+      },
+      { new: true },
+    ).populate("accountId");
     console.log("🚀 ~ updateUserService ~ updatedUser:", updatedUser);
 
     return updatedUser;
@@ -123,6 +89,10 @@ const updateUserService = async (
 
 const deleteUserService = async (id) => {
   try {
+    const user = await User.findById(id);
+
+    await Account.findByIdAndDelete(user.accountId);
+
     const deletedUser = await User.findByIdAndDelete(id);
     console.log("🚀 ~ deleteUserService ~ deletedUser:", deletedUser);
 
@@ -136,10 +106,9 @@ const deleteUserService = async (id) => {
 };
 
 module.exports = {
+  createUserService,
   getUserListService,
   getUserByIdService,
-  addNewUserService,
-  handleLoginService,
   updateUserService,
   deleteUserService,
 };

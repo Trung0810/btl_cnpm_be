@@ -3,15 +3,6 @@ const { Schema, model } = mongoose;
 
 const userSchema = Schema(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
     fullname: {
       type: String,
       required: true,
@@ -41,6 +32,10 @@ const userSchema = Schema(
     role: {
       type: String,
       required: true,
+    },
+    accountId: {
+      type: Schema.Types.ObjectId,
+      ref: "Account",
     },
   },
   { timestamps: true },

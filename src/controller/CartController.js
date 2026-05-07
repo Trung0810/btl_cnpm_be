@@ -8,7 +8,7 @@
 
 const getCartByCustomerIdController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const result = await getCartByCustomerIdService(customerId);
 
     return res.status(200).json({
@@ -24,7 +24,7 @@ const getCartByCustomerIdController = async (req, res) => {
 
 const addShoesToCartController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const data = req.body;
     const result = await addShoesToCartService(customerId, data);
 
@@ -41,7 +41,7 @@ const addShoesToCartController = async (req, res) => {
 
 const updateShoesQuantityController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const data = req.body;
     const result = await updateShoesQuantityService(customerId, data);
 
@@ -58,7 +58,7 @@ const updateShoesQuantityController = async (req, res) => {
 
 const removeShoesFromCartController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const data = req.body;
     const result = await removeShoesFromCartService(customerId, data);
 
@@ -75,7 +75,7 @@ const removeShoesFromCartController = async (req, res) => {
 
 const clearCartController = async (req, res) => {
   try {
-    const customerId = req.user.customerId;
+    const customerId = req.user.userId;
     const result = await clearCartService(customerId);
 
     return res.status(200).json({
